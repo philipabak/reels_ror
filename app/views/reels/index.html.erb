@@ -1,0 +1,30 @@
+<div class="row p-3">
+  <h2>All Reels</h2>
+
+  <div class="col-md-2 p-3">
+  <%= link_to '+ New Reel', new_reel_path, class: 'btn btn-primary' %>
+  </div>
+
+  <table class="table table-hover table-responsive table-bordered">
+    <tr class="table-light">
+      <th>Name</th>
+      <th>Video Standard</th>
+      <th>Video Definition</th>
+      <th>Total Play Time</th>
+      <th>Action</th>
+    </tr>
+    <% @reels.each do |reel| %>
+      <tr>
+        <td><%= reel.name %></td>
+        <td><%= reel.video_standard %></td>
+        <td><%= reel.video_definition %></td>
+        <td><%= reel.total_play_time %></td>
+        <td>
+          <%= link_to 'Show', reel_path(reel), class: 'btn btn-warning' %>
+          <%= link_to 'Edit', edit_reel_path(reel), class: 'btn btn-info' %>
+          <%= button_to "Delete", reel_path(reel), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

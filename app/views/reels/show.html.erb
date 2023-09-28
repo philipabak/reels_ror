@@ -1,0 +1,64 @@
+<div class="row p-3">
+    <h2>Reel Details</h2>
+
+    <div class="col-md-12">
+        <div class="col-md-4 offset-md-4">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" value="<%= @reel.name %>" readonly>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-4 offset-md-4">
+            <label class="form-label">Video Standard</label>
+            <input type="text" class="form-control" value="<%= @reel.video_standard %>" readonly>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-4 offset-md-4">
+            <label class="form-label">Video Definition</label>
+            <input type="text" class="form-control" value="<%= @reel.video_definition %>" readonly>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-8 offset-md-4">
+            <div class="row col-md-12">
+                <div class="col-md-6">
+                    <label>Added Clips</label>
+                    <ul id="addedClips" class="form-control">
+                        <% @added_clips.each do |clip| %>
+                            <li class="form-control clip_item"
+                                data-id="<%= clip.id %>"
+                                data-standard="<%= clip.video_standard %>"
+                                data-definition="<%= clip.video_definition %>"
+                                data-endtime="<%= clip.end_time %>"
+                            >
+                                <span><%= clip.name %></span>
+                                <span>(<%= clip.video_standard %> |</span>
+                                <span><%= clip.video_definition %> |</span>
+                                <span class="float-right"><%= clip.end_time %>)</span>
+                            </li>
+                        <% end %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-4 offset-md-4">
+            <label class="form-label">Total Play Time</label>
+            <input type="text" class="form-control mb-3" value="<%= @reel.total_play_time %>" readonly>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-2 offset-md-4">
+            <%= link_to 'Edit', edit_reel_path(@reel), class: "btn btn-info" %>
+            <%= link_to 'Back', reels_path, class: "btn btn-secondary" %>
+        </div>
+    </div>
+</div>
+

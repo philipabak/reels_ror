@@ -7,9 +7,48 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag 'bootstrap.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'jquery-ui.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'bootstrap.min', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'jquery.min', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'jquery-ui.min', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= yield %>
+  <% flash.each do |key, value| %>
+  <div class="alert alert-notice alert-success">
+    <%= value %>
+  </div>
+<% end %>
+
+    <header>
+      <% paths = request.path.split('/') %>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <%= link_to 'Dashboard', root_path, class: "navbar-brand" %>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <%= link_to 'Reels', reels_path, class: "nav-link #{ paths[1] === 'reels' ? 'active' : '' }" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'Clips', clips_path,class: "nav-link #{ paths[1] === 'clips' ? 'active' : '' }" %>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <%= yield %>
+    </main>
   </body>
 </html>
+
+<script>
+$(document).ready(function() {
+  $(".alert-notice").delay(2000).fadeOut();
+});
+
+</script>

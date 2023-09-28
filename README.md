@@ -3,22 +3,24 @@
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
-Things you may want to cover:
+Project details:
 
-* Ruby version
+* Ruby version: 2.7.2
 
-* System dependencies
+* Rails version: > 7.0.8
 
-* Configuration
+* Database: sqlite3
 
-* Database creation
+Commands to run the project step by step:
 
-* Database initialization
+* `bundle install`
 
-* How to run the test suite
+* `rake db:create`
 
-* Services (job queues, cache servers, search engines, etc.)
+* `rake db:migrate`
 
-* Deployment instructions
+* `rake db:seed`
 
-* ...
+* `rails s`
+
+* `http://localhost:3000`

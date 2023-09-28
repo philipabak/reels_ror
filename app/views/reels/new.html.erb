@@ -1,0 +1,145 @@
+<div class="row p-3">
+    <h2>Create a New Reel</h2>
+
+    <%= form_with(model: @reel, class: 'row g-3 needs-validation', url: reels_path) do |form| %>
+        <%= form.hidden_field :clip_list, id: 'clip_list' %>
+        <input type="hidden" name="clip_times" id="clip_times">
+        
+        <div class="col-md-12">
+            <div class="col-md-4 offset-md-4">
+                <%= form.label :name, class: 'form-label' %>
+                <%= form.text_field :name, class: 'form-control', required: true %>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="col-md-4 offset-md-4">
+                <%= form.label :video_standard, class: 'form-label' %>
+                <%= form.select :video_standard, options_for_select([['PAL', 'PAL'], ['NTSC', 'NTSC']]), { prompt: 'Select ...' }, { class: 'form-select video_standard_select', required: true } %>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="col-md-4 offset-md-4">
+                <%= form.label :video_definition, class: 'form-label' %>
+                <%= form.select :video_definition, options_for_select([['SD', 'SD'], ['HD', 'HD']]), { prompt: 'Select ...' }, { class: 'form-select video_definition_select', required: true } %>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="col-md-8 offset-md-4">
+                <div class="row col-md-12">
+                    <div class="col-md-6">
+                        <label>Added Clips</label>
+                        <ul id="addedClips" class="form-control">
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <label>All Clips</label>
+                        <ul id="allClips" class="form-control">
+                            <% @clips.each do |clip| %>
+                                <li class="form-control clip_item"
+                                 data-id="<%= clip.id %>"
+                                 data-standard="<%= clip.video_standard %>"
+                                 data-definition="<%= clip.video_definition %>"
+                                 data-endtime="<%= clip.end_time %>"
+                                >
+                                    <span><%= clip.name %></span>
+                                    <span>(<%= clip.video_standard %> |</span>
+                                    <span><%= clip.video_definition %> |</span>
+                                    <span class="float-right"><%= clip.end_time %>)</span>
+                                </li>
+                            <% end %>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="col-md-2 offset-md-4">
+                <%= form.submit 'Create Reel', class: 'btn btn-success' %>
+                <%= link_to 'Back', reels_path, class: 'btn btn-secondary' %>
+            </div>
+        </div>
+    <% end %>
+</div>
+
+<script>
+    $(function() {
+        $("#addedClips, #allClips").sortable ({
+            connectWith: "ul",
+            placeholder: "placeholder",
+            delay: 150,
+            receive: function() {
+                updateClipsIds();
+            }
+        })
+        .disableSelection ()
+        .dblclick( function(e) {
+            var item = e.target;
+            if (e.currentTarget.id === 'addedClips') {
+                $(item).fadeOut('fast', function() {
+                    $(item).appendTo($('#allClips')).fadeIn('slow');
+                });
+            } else {
+                $(item).fadeOut('fast', function() {
+                    $(item).appendTo($('#addedClips')).fadeIn('slow');
+                });
+            }
+        });
+    });
+
+    var standard_value = '';
+    var definition_value = '';
+
+    $(document).ready(function() {
+        $('.video_standard_select').change(function() {
+            standard_value = $(this).val();
+            
+            displayClips();
+            updateClipsIds();
+        });
+
+        $('.video_definition_select').change(function() {
+            definition_value = $(this).val();
+
+            displayClips();
+            updateClipsIds();
+        });
+    });
+
+    function displayClips() {
+        var elements = $(".clip_item");
+        
+        elements.addClass("display_none");
+        
+        if (standard_value !== '' && definition_value !== '') {
+                elements = $(".clip_item[data-standard='" + standard_value + "'][data-definition='" + definition_value + "']");
+        } else if (standard_value === '' && definition_value !== '') {
+            elements = $(".clip_item[data-definition='" + definition_value + "']");
+        } else if (standard_value !== '' && definition_value === '') {
+            elements = $(".clip_item[data-standard='" + standard_value + "']");
+        } else {
+            elements = $(".clip_item");
+        }
+
+        elements.removeClass("display_none");
+    }
+
+    function updateClipsIds() {
+        var clip_ids = [];
+        var clip_times = [];
+
+        var added_elements = $("ul#addedClips").find("li:visible");
+        added_elements.each(function () {
+            clip_ids.push($(this).attr('data-id'));
+            clip_times.push($(this).attr('data-endtime'));
+        });
+
+        $("#clip_list").val(clip_ids);
+        $("#clip_times").val(clip_times);
+    }
+
+</script>
